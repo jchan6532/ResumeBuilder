@@ -37,6 +37,7 @@ namespace UI.Modals
                 Description = DescriptionTxtBox.Text,
                 From = (DateTime)FromDate.SelectedDate,
                 To = (DateTime)ToDate.SelectedDate,
+                Institution = InstitutionTxtBox.Text,
                 SectionType = "type"
             };
 

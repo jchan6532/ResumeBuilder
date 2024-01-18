@@ -39,7 +39,8 @@ namespace Components.Services
         public static void CreateNewSectionEntry(string sectionName, SectionEntry entry)
         {
             string currentDir = Environment.CurrentDirectory;
-            string serializedEntry = XmlService.Serialize<SectionEntry>(entry, false, false);
+            //string serializedEntry = XmlService.Serialize<SectionEntry>(entry, false, false);
+            string serializedEntry = JsonService.Stringify(entry);
             File.WriteAllText($@"{currentDir}\Resume Sections\{sectionName}\{entry.Name}.txt", serializedEntry);
         }
 
@@ -53,11 +54,18 @@ namespace Components.Services
             foreach (string file in files)
             {
                 string serialized = File.ReadAllText(file);
-                SectionEntry entry = XmlService.Deserialize<SectionEntry>(serialized);
+                SectionEntry entry = JsonService.ToJson(serialized);
                 deserializedResults.Add(entry);
             }
 
             return deserializedResults;
+        }
+
+        public static void DeleteSection(string sectionName)
+        {
+            string currentDir = Environment.CurrentDirectory;
+
+            Directory.Delete($@"{currentDir}\Resume Sections\{sectionName}", true);
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Components.Entities
     {
         public string SectionType { get; set; }
 
+        public string Institution { get; set; }
+
         public string Name { get; set; }
 
         public DateTime From { get; set; }

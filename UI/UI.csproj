@@ -84,6 +84,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modals\UpdateSectionEntryModal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modals\AddSectionEntryModal.xaml.cs">
@@ -94,6 +98,9 @@
     </Compile>
     <Compile Include="Modals\SectionContentModal.xaml.cs">
       <DependentUpon>SectionContentModal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modals\UpdateSectionEntryModal.xaml.cs">
+      <DependentUpon>UpdateSectionEntryModal.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

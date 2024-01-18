@@ -8,51 +8,55 @@
         Title="MainWindow" Height="800" Width="450"
         Loaded="Window_Loaded"
         ResizeMode="NoResize">
-    <StackPanel
+    <DockPanel
+        LastChildFill="True"
+        >
+        <StackPanel
         Margin="20"
         Orientation="Vertical"
+            DockPanel.Dock="Top"
         >
-        <DockPanel 
+            <DockPanel 
             Background="#885f96" 
             LastChildFill="False"
             Margin="0 0 0 10"
             >
-            <Label 
+                <Label 
                 Content="Resume Sections" 
                 DockPanel.Dock="Left"
                 FontWeight="Bold"
                 Foreground="White"
                 FontSize="15"
                 />
-            <Button 
+                <Button 
                 x:Name="AddSectionBtn"
                 Click="AddSectionBtn_Click"
                 Content="Add Section"
                 DockPanel.Dock="Right"
                 Padding="10 0"
                 />
-        </DockPanel>
+            </DockPanel>
 
-        <StackPanel
+            <StackPanel
             x:Name="AddNewSection"
             Visibility="Collapsed"
             >
-            <Label
+                <Label
                 Content="Name"
                 Margin="20 0"
                 FontSize="15"
                 />
-            <TextBox
+                <TextBox
                 Margin="20 0"
                 Padding="5"
                 x:Name="SectionNameTxtBox"
                 />
 
-            <StackPanel
+                <StackPanel
                 Orientation="Horizontal"
                 HorizontalAlignment="Center"
                 >
-                <Button
+                    <Button
                 x:Name="ConfirmSectionBtn"
                 Content="Confirm"
                 Width="100"
@@ -60,72 +64,83 @@
                 Padding="10 5"
                 Click="ConfirmSectionBtn_Click"
                 />
-                <Button
+                    <Button
                 Content="Cancel"
                 Margin="5 20 20 20"
                 Width="100"
                 x:Name="CancelBtn"
                 Click="CancelBtn_Click"
                 />
-            </StackPanel>
+                </StackPanel>
 
-            <TextBlock
+                <TextBlock
                 x:Name="ErrorMsg"
                 Foreground="Red"
                 HorizontalAlignment="Center"
                 />
-        </StackPanel>
+            </StackPanel>
 
 
-        <StackPanel
+            <StackPanel
             Orientation="Vertical"
             x:Name="SectionsCheckBoxes"
             >
-        </StackPanel>
+            </StackPanel>
 
-        <ListBox
+            <ListBox
             x:Name="SectionsListsBox"
             Visibility="Collapsed"
             />
 
-        <DockPanel 
+            <DockPanel 
             Visibility="Collapsed"
             LastChildFill="False"
             Margin="0 10 0 0"
             x:Name="SectionHeader"
             >
-            <Label 
-                FontSize="15"
-                FontWeight="Bold"
-                x:Name="SectionOverview"
-                DockPanel.Dock="Left"
-                />
-            <Button
-                Content="Delete Section"
-                x:Name="DeleteBtn"
-                Click="DeleteBtn_Click"
-                HorizontalAlignment="Right"
-                Padding="10 0"
-                Margin="5 0"
-                DockPanel.Dock="Right"
-                />
-            <Button
-                Content="New Entry"
-                x:Name="NewEntryBtn"
-                Click="NewEntryBtn_Click"
-                HorizontalAlignment="Right"
-                Padding="10 0"
-                Margin="5 0"
-                DockPanel.Dock="Right"
-                />
-        </DockPanel>
+                <Label 
+                    FontSize="15"
+                    FontWeight="Bold"
+                    x:Name="SectionOverview"
+                    DockPanel.Dock="Left"
+                    />
+                <Button
+                    Content="Delete Section"
+                    x:Name="DeleteBtn"
+                    Click="DeleteBtn_Click"
+                    HorizontalAlignment="Right"
+                    Padding="10 0"
+                    Margin="5 0"
+                    DockPanel.Dock="Right"
+                    />
+                <Button
+                    Content="New Entry"
+                    x:Name="NewEntryBtn"
+                    Click="NewEntryBtn_Click"
+                    HorizontalAlignment="Right"
+                    Padding="10 0"
+                    Margin="5 0"
+                    DockPanel.Dock="Right"
+                    />
+            </DockPanel>
 
-        <StackPanel
+            <StackPanel
             Orientation="Vertical"
             Visibility="Collapsed"
             x:Name="SectionArea"
             Margin="0 10 0 0"
             >
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+        
+        <Button
+            Content="Create Resume"
+            Width="100"
+            Height="30"
+            DockPanel.Dock="Bottom"
+            VerticalAlignment="Bottom"
+            Margin="20"
+            />
+
+    </DockPanel>
 </Window>

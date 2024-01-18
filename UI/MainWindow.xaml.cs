@@ -16,6 +16,8 @@ using UI.Modals;
 using Components.Services;
 using Components.Entities;
 using System.IO;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace UI
 {
@@ -54,6 +56,7 @@ namespace UI
                 SectionOverview.Content = $"{(ev as ListBoxItem).Content} Overview";
                 CurrentSelectedSection = (ev as ListBoxItem).Content.ToString();
                 List<SectionEntry> allEntries = SectionsManager.GetAllSectionEntries(CurrentSelectedSection);
+                SectionArea.Children.Clear();
                 foreach (SectionEntry entry in allEntries)
                 {
                     AddSectionContentTextBlock(entry);
@@ -63,8 +66,14 @@ namespace UI
             };
             listItem.MouseDoubleClick += (ev, a) =>
             {
-                SectionContentModal sectionContentModal = new SectionContentModal();
-                sectionContentModal.ShowDialog();
+                string currentDir = Environment.CurrentDirectory;
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.InitialDirectory = $@"{currentDir}\Resume Sections\{(ev as ListBoxItem).Content.ToString()}";
+
+                if ((bool)openFileDialog.ShowDialog())
+                {
+                    Process.Start("notepad.exe", openFileDialog.FileName);
+                }
             };
             SectionsListsBox.Items.Add(listItem);
         }
@@ -87,7 +96,7 @@ namespace UI
                     Manager.SelectedSections.Remove((eventSender as CheckBox).Content.ToString());
                     var sectionsList = SectionsListsBox.Items.Cast<ListBoxItem>().ToList();
                     var sectionToRemove = sectionsList.FirstOrDefault(
-                        listItem => listItem.Content as string == (eventSender as CheckBox).Content.ToString()
+                        listItem => listItem.Content.ToString() == (eventSender as CheckBox).Content.ToString()
                         );
                     SectionsListsBox.Items.Remove(sectionToRemove);
                 }
@@ -128,6 +137,21 @@ namespace UI
             };
             newContentEntry.FontSize = 15;
             newContentEntry.Text = newEntry.Name;
+            newContentEntry.PreviewMouseDown += (e, a) =>
+            {
+                if (a.ClickCount == 2)
+                {
+                    string sectionName = CurrentSelectedSection;
+                    string entryName = (e as TextBlock).Text;
+                    string currentDir = Environment.CurrentDirectory;
+                    string content = File.ReadAllText($@"{currentDir}\Resume Sections\{sectionName}\{entryName}.txt");
+                    SectionEntry entry = JsonService.ToJson(content);
+
+                    UpdateSectionEntryModal updateSectionEntryModal = new UpdateSectionEntryModal(entry);
+                    updateSectionEntryModal.ShowDialog();
+                }
+            };
+
             border.Child = newContentEntry;
 
             SectionArea.Children.Add(border);
@@ -184,17 +208,39 @@ namespace UI
 
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("deleted");
+            SectionsManager.DeleteSection(CurrentSelectedSection);
+            Manager.SectionNames.Remove(CurrentSelectedSection);
+            Manager.SelectedSections.Remove(CurrentSelectedSection);
+
+            var sectionsList = SectionsListsBox.Items.Cast<ListBoxItem>().ToList();
+            var sectionToRemove = sectionsList.FirstOrDefault(
+                listItem => listItem.Content.ToString() == CurrentSelectedSection
+                );
+            SectionsListsBox.Items.Remove(sectionToRemove);
+
+            var sectionCheckBoxes = SectionsCheckBoxes.Children.Cast<CheckBox>().ToList();
+            var sectionCheckBoxToRemove = sectionCheckBoxes.FirstOrDefault(
+                sectionCheckBox => sectionCheckBox.Content.ToString() == CurrentSelectedSection
+                );
+            sectionCheckBoxToRemove.IsChecked = false;
+            SectionsCheckBoxes.Children.Remove(sectionCheckBoxToRemove);
+
+            SectionOverview.Content = "Section Overview";
+            SectionArea.Children.Clear();
+            if (SectionsListsBox.Items.Count == 0)
+            {
+                SectionsListsBox.Visibility = Visibility.Collapsed;
+            }
+            SectionHeader.Visibility = Visibility.Collapsed;
+            SectionArea.Visibility = Visibility.Collapsed;
+            CurrentSelectedSection = null;
         }
 
         private void NewEntryBtn_Click(object sender, RoutedEventArgs e)
         {
             AddSectionEntryModal addSectionEntryModal = new AddSectionEntryModal(CurrentSelectedSection);
             addSectionEntryModal.ShowDialog();
-            string serializedEntry = XmlService.Serialize<SectionEntry>(addSectionEntryModal.NewEntry, false, false);
-
-            string currentDir = Environment.CurrentDirectory;
-            File.WriteAllText($@"{currentDir}\Resume Sections\{CurrentSelectedSection}\{addSectionEntryModal.NewEntry.Name}.txt", serializedEntry);
+            SectionsManager.CreateNewSectionEntry(CurrentSelectedSection, addSectionEntryModal.NewEntry);
 
             AddSectionContentTextBlock(addSectionEntryModal.NewEntry);
         }
