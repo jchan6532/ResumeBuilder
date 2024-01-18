@@ -5,8 +5,127 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="800" Width="450"
+        Loaded="Window_Loaded"
+        ResizeMode="NoResize">
+    <StackPanel
+        Margin="20"
+        Orientation="Vertical"
+        >
+        <DockPanel 
+            Background="#885f96" 
+            LastChildFill="False"
+            Margin="0 0 0 10"
+            >
+            <Label 
+                Content="Resume Sections" 
+                DockPanel.Dock="Left"
+                FontWeight="Bold"
+                Foreground="White"
+                FontSize="15"
+                />
+            <Button 
+                x:Name="AddSectionBtn"
+                Click="AddSectionBtn_Click"
+                Content="Add Section"
+                DockPanel.Dock="Right"
+                Padding="10 0"
+                />
+        </DockPanel>
+
+        <StackPanel
+            x:Name="AddNewSection"
+            Visibility="Collapsed"
+            >
+            <Label
+                Content="Name"
+                Margin="20 0"
+                FontSize="15"
+                />
+            <TextBox
+                Margin="20 0"
+                Padding="5"
+                x:Name="SectionNameTxtBox"
+                />
+
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                >
+                <Button
+                x:Name="ConfirmSectionBtn"
+                Content="Confirm"
+                Width="100"
+                Margin="20"
+                Padding="10 5"
+                Click="ConfirmSectionBtn_Click"
+                />
+                <Button
+                Content="Cancel"
+                Margin="5 20 20 20"
+                Width="100"
+                x:Name="CancelBtn"
+                Click="CancelBtn_Click"
+                />
+            </StackPanel>
+
+            <TextBlock
+                x:Name="ErrorMsg"
+                Foreground="Red"
+                HorizontalAlignment="Center"
+                />
+        </StackPanel>
+
+
+        <StackPanel
+            Orientation="Vertical"
+            x:Name="SectionsCheckBoxes"
+            >
+        </StackPanel>
+
+        <ListBox
+            x:Name="SectionsListsBox"
+            Visibility="Collapsed"
+            />
+
+        <DockPanel 
+            Visibility="Collapsed"
+            LastChildFill="False"
+            Margin="0 10 0 0"
+            x:Name="SectionHeader"
+            >
+            <Label 
+                FontSize="15"
+                FontWeight="Bold"
+                x:Name="SectionOverview"
+                DockPanel.Dock="Left"
+                />
+            <Button
+                Content="Delete Section"
+                x:Name="DeleteBtn"
+                Click="DeleteBtn_Click"
+                HorizontalAlignment="Right"
+                Padding="10 0"
+                Margin="5 0"
+                DockPanel.Dock="Right"
+                />
+            <Button
+                Content="New Entry"
+                x:Name="NewEntryBtn"
+                Click="NewEntryBtn_Click"
+                HorizontalAlignment="Right"
+                Padding="10 0"
+                Margin="5 0"
+                DockPanel.Dock="Right"
+                />
+        </DockPanel>
+
+        <StackPanel
+            Orientation="Vertical"
+            Visibility="Collapsed"
+            x:Name="SectionArea"
+            Margin="0 10 0 0"
+            >
+        </StackPanel>
+    </StackPanel>
 </Window>
