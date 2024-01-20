@@ -10,9 +10,20 @@ namespace Components.Services
 {
     public class SectionsManager
     {
+        /// <summary>
+        /// All resume sections existing within the resume sections directory
+        /// </summary>
         public List<string> SectionNames { get; set; }
 
+        /// <summary>
+        /// Currently selected sections in the UI
+        /// </summary>
         public List<string> SelectedSections { get; set; }
+
+        /// <summary>
+        /// Currently accumulated selected entries in the UI
+        /// </summary>
+        public List<SectionEntry> Entries { get; set; }
 
         public SectionsManager()
         {
@@ -24,6 +35,7 @@ namespace Components.Services
 
             SectionNames = new List<string>();
             SelectedSections = new List<string>();
+            Entries = new List<SectionEntry>();
             foreach (string sectionFileName in Directory.GetDirectories("Resume Sections"))
             {
                 SectionNames.Add(Path.GetFileNameWithoutExtension($@"{currentDir}\Resume Sections\{sectionFileName}"));
@@ -39,7 +51,6 @@ namespace Components.Services
         public static void CreateNewSectionEntry(string sectionName, SectionEntry entry)
         {
             string currentDir = Environment.CurrentDirectory;
-            //string serializedEntry = XmlService.Serialize<SectionEntry>(entry, false, false);
             string serializedEntry = JsonService.Stringify(entry);
             File.WriteAllText($@"{currentDir}\Resume Sections\{sectionName}\{entry.Name}.txt", serializedEntry);
         }

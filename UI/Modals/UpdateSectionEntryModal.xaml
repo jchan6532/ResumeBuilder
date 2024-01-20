@@ -84,16 +84,18 @@
             HorizontalAlignment="Center"
             >
             <Button
-                Content="Submit"
+                Content="Save"
                 Margin="20 20 5 20"
                 Width="100"
-                x:Name="SubmitBtn"
+                x:Name="SaveBtn"
+                Click="SaveBtn_Click"
                 />
             <Button
                 Content="Cancel"
                 Margin="5 20 20 20"
                 Width="100"
                 x:Name="CancelBtn"
+                Click="CancelBtn_Click"
                 />
         </StackPanel>
     </StackPanel>

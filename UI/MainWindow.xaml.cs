@@ -33,6 +33,7 @@ namespace UI
         public int ListItemHeight { get; set; } = 30;
 
         public string CurrentSelectedSection { get; set; } = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -145,10 +146,33 @@ namespace UI
                     string entryName = (e as TextBlock).Text;
                     string currentDir = Environment.CurrentDirectory;
                     string content = File.ReadAllText($@"{currentDir}\Resume Sections\{sectionName}\{entryName}.txt");
-                    SectionEntry entry = JsonService.ToJson(content);
+                    SectionEntry oldEntry = JsonService.ToJson(content);
 
-                    UpdateSectionEntryModal updateSectionEntryModal = new UpdateSectionEntryModal(entry);
+                    UpdateSectionEntryModal updateSectionEntryModal = new UpdateSectionEntryModal(oldEntry);
                     updateSectionEntryModal.ShowDialog();
+
+                    if (updateSectionEntryModal.Entry != null)
+                    {
+                        if (!updateSectionEntryModal.CreateNewEntry)
+                        {
+                            File.Delete($@"{currentDir}\Resume Sections\{sectionName}\{entryName}.txt");
+                        }
+
+                        SectionEntry updatedEntry = updateSectionEntryModal.Entry;
+                        string updatedContent = JsonService.Stringify(updatedEntry);
+                        File.WriteAllText($@"{currentDir}\Resume Sections\{sectionName}\{updateSectionEntryModal.Entry.Name}.txt", updatedContent);
+
+                        SectionArea.Children.Clear();
+                        List<SectionEntry> updatedEntries = SectionsManager.GetAllSectionEntries(CurrentSelectedSection);
+                        foreach (SectionEntry entry in updatedEntries)
+                        {
+                            AddSectionContentTextBlock(entry);
+                        }
+                    }
+                }
+                else
+                {
+                    
                 }
             };
 
@@ -240,9 +264,27 @@ namespace UI
         {
             AddSectionEntryModal addSectionEntryModal = new AddSectionEntryModal(CurrentSelectedSection);
             addSectionEntryModal.ShowDialog();
+            addSectionEntryModal.NewEntry.SectionType = CurrentSelectedSection;
             SectionsManager.CreateNewSectionEntry(CurrentSelectedSection, addSectionEntryModal.NewEntry);
 
             AddSectionContentTextBlock(addSectionEntryModal.NewEntry);
+        }
+
+        private void CreateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Resume resume = new Resume()
+            {
+                Address = "Waterloo, ON",
+                Name = "Justin Chan"
+            };
+
+            List<SectionEntry> allEntries = new List<SectionEntry>();
+            foreach (string sectionName in Manager.SelectedSections)
+            {
+                allEntries.AddRange(SectionsManager.GetAllSectionEntries(sectionName));
+            }
+
+            resume.LoadSectionsAndEntries(Manager.SelectedSections, allEntries);
         }
     }
 }

@@ -21,6 +21,8 @@ namespace UI.Modals
     public partial class UpdateSectionEntryModal : Window
     {
         public SectionEntry Entry { get; set; }
+
+        public bool CreateNewEntry { get; set; }
         public UpdateSectionEntryModal(SectionEntry entry)
         {
             InitializeComponent();
@@ -34,6 +36,33 @@ namespace UI.Modals
             ToDate.SelectedDate = Entry.To;
             InstitutionTxtBox.Text = Entry.Institution;
             DescriptionTxtBox.Text = Entry.Description;
+        }
+
+        private void SaveBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (NameTxtBox.Text != Entry.Name)
+            {
+                MessageBoxResult result = MessageBox.Show("Would you like to create a new entry instead?",
+                    "Create new entry",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                CreateNewEntry = result == MessageBoxResult.Yes ? true : false;
+            }
+
+            Entry.Name = NameTxtBox.Text;
+            Entry.From = FromDate.SelectedDate.Value;
+            Entry.To = ToDate.SelectedDate.Value;
+            Entry.Institution = InstitutionTxtBox.Text;
+            Entry.Description = DescriptionTxtBox.Text;
+
+            this.Close();
+        }
+
+        private void CancelBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Entry = null;
+            this.Close();
         }
     }
 }

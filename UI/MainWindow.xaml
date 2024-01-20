@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
+        xmlns:uicomponents="clr-namespace:UI.UIComponents"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="450"
         Loaded="Window_Loaded"
@@ -16,6 +17,8 @@
         Orientation="Vertical"
             DockPanel.Dock="Top"
         >
+            <uicomponents:SectionEntryItem/>
+
             <DockPanel 
             Background="#885f96" 
             LastChildFill="False"
@@ -79,8 +82,7 @@
                 HorizontalAlignment="Center"
                 />
             </StackPanel>
-
-
+            
             <StackPanel
             Orientation="Vertical"
             x:Name="SectionsCheckBoxes"
@@ -140,6 +142,8 @@
             DockPanel.Dock="Bottom"
             VerticalAlignment="Bottom"
             Margin="20"
+            x:Name="CreateBtn"
+            Click="CreateBtn_Click"
             />
 
     </DockPanel>
